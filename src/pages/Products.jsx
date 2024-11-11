@@ -1,7 +1,7 @@
 function Products() {
   return (
     <div>
-      <h1 className="text-4xl">Hello</h1>
+      <h1 className="text-4xl align-element"></h1>
     </div>
   );
 }

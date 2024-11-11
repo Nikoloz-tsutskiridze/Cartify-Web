@@ -4,7 +4,7 @@
 
 @layer components {
   .align-element {
-    @apply mx-auto max-w-6xl px-8;
+    @apply mx-auto max-w-7xl px-9;
   }
 }
 
@@ -28,7 +28,7 @@
 
 .carousel-container {
   display: flex;
-  animation: slide-carousel 12s ease-in-out infinite alternate;
+  animation: slide-carousel 14s ease-in-out infinite alternate;
   width: calc(100% + 14rem);
   gap: 2rem;
 }
