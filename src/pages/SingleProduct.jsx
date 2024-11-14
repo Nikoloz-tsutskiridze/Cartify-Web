@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router";
-import { customFetch, formatPrice } from "../utils";
+import { customFetch, formatPrice, generateAmountOptions } from "../utils";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
@@ -44,10 +44,10 @@ function SingleProduct() {
         <div>
           <div className="flex justify-between">
             <h1 className="capitalize text-3xl font-bold">{title}</h1>
-            <button className="btn bg-slate-100">
+            <button className="btn bg-slate-200">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 "
+                className="h-6 w-6 text-slate-500"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -92,14 +92,12 @@ function SingleProduct() {
               </h4>
             </label>
             <select
-              className="select select-bordered w-full max-w-xs bg-slate-100"
+              className="select select-slate-200 w-full max-w-xs text-slate-600 bg-slate-200"
               id="amount"
               value={amount}
               onChange={handleAmount}
             >
-              <option value={1}>1</option>
-              <option value={2}>2</option>
-              <option value={3}>3</option>
+              {generateAmountOptions(15)}
             </select>
           </div>
           <div className="mt-10">
