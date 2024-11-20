@@ -2,6 +2,8 @@ import { useLoaderData } from "react-router";
 import { customFetch, formatPrice, generateAmountOptions } from "../utils";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addItem } from "../featured/cart/cartSlice";
 
 export const loader = async function ({ params }) {
   const response = await customFetch(`/products/${params.id}`);
@@ -20,6 +22,23 @@ function SingleProduct() {
 
   function handleAmount(e) {
     setAmount(parseInt(e.target.value));
+  }
+
+  const cartProduct = {
+    cartID: product.id + productColor,
+    productID: product.id,
+    image,
+    title,
+    price,
+    company,
+    productColor,
+    amount,
+  };
+
+  const dispatch = useDispatch();
+
+  function addToCart() {
+    dispatch(addItem({ product: cartProduct }));
   }
 
   return (
@@ -44,7 +63,7 @@ function SingleProduct() {
         <div>
           <div className="flex justify-between">
             <h1 className="capitalize text-3xl font-bold">{title}</h1>
-            <button className="btn bg-slate-200">
+            <button className="btn bg-base-200">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6 text-slate-500"
@@ -92,7 +111,7 @@ function SingleProduct() {
               </h4>
             </label>
             <select
-              className="select select-slate-200 w-full max-w-xs text-slate-600 bg-slate-200"
+              className="select select-slate-200 w-full max-w-xs text-slate-500 bg-base-200"
               id="amount"
               value={amount}
               onChange={handleAmount}
@@ -101,10 +120,7 @@ function SingleProduct() {
             </select>
           </div>
           <div className="mt-10">
-            <button
-              className="btn btn-active btn-primary "
-              onClick={console.log("add")}
-            >
+            <button className="btn btn-active btn-primary " onClick={addToCart}>
               Add to cart
             </button>
           </div>
