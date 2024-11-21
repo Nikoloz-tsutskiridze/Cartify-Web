@@ -68,7 +68,7 @@ function SingleProduct() {
         <img
           src={image}
           alt={title}
-          className="w-96 h-[574px] object-cover rounded-lg lg:w-full"
+          className="w-96 h-[574px] object-cover rounded-lg lg:w-full mb-4"
         />
         <div>
           <div className="flex justify-between">
