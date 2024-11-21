@@ -2,13 +2,13 @@ import { Form, useLoaderData, Link } from "react-router-dom";
 import FormInput from "./FormInput";
 import FormSelect from "./FormSelect";
 import FormRange from "./FormRange";
-import FormCheckbox from "./FormCheckbox";
+
 const Filters = () => {
   const { meta, params } = useLoaderData();
   const { search, company, category, shipping, order, price } = params;
 
   return (
-    <Form className="bg-base-200 rounded-md px-8 py-4 grid gap-x-4  gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center">
+    <Form className="bg-base-200 rounded-md px-8 py-4 grid gap-x-4 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center">
       {/* SEARCH */}
       <FormInput
         type="search"
@@ -65,4 +65,21 @@ const Filters = () => {
     </Form>
   );
 };
+
+function FormCheckbox({ label, name, defaultValue, size }) {
+  return (
+    <div className="form-control items-center">
+      <label htmlFor={name} className="label cursor-pointer">
+        <span className="label-text capitalize">{label}</span>
+      </label>
+      <input
+        type="checkbox"
+        name={name}
+        defaultChecked={defaultValue}
+        className={`checkbox checkbox-primary ${size}`}
+      />
+    </div>
+  );
+}
+
 export default Filters;
