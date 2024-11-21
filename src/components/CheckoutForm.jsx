@@ -8,22 +8,28 @@ import { clearCart } from "../featured/cart/cartSlice";
 export const action =
   (store, queryClient) =>
   async ({ request }) => {
-    const formData = await request.formData();
-    const { name, address } = Object.fromEntries(formData);
-    const user = store.getState().userState.user;
-    const { cartItems, orderTotal, numItemsInCart } =
-      store.getState().cartState;
-
-    const info = {
-      name,
-      address,
-      chargeTotal: orderTotal,
-      orderTotal: formatPrice(orderTotal),
-      cartItems,
-      numItemsInCart,
-    };
-
     try {
+      const formData = await request.formData();
+      const { name, address } = Object.fromEntries(formData);
+      const user = store.getState().userState.user;
+
+      const { cartItems, orderTotal, numItemsInCart } =
+        store.getState().cartState;
+
+      const info = {
+        name,
+        address,
+        chargeTotal: orderTotal,
+        orderTotal: formatPrice(orderTotal),
+        cartItems,
+        numItemsInCart,
+      };
+
+      if (!user?.token) {
+        toast.error("You are not authenticated. Please log in.");
+        return redirect("/login");
+      }
+
       const response = await customFetch.post(
         "/orders",
         { data: info },
@@ -33,17 +39,23 @@ export const action =
           },
         }
       );
-      queryClient.removeQueries(["orders"]);
+
       store.dispatch(clearCart());
-      toast.success("order placed successfully");
+      toast.success("Order placed successfully");
       return redirect("/orders");
     } catch (error) {
-      console.log(error);
+      console.error("Error placing order:", error);
+
       const errorMessage =
         error?.response?.data?.error?.message ||
-        "there was an error placing your order";
+        "There was an error placing your order";
+
+      if (error?.response?.status === 401 || error?.response?.status === 403) {
+        toast.error("Authentication error. Please log in again.");
+        return redirect("/login");
+      }
+
       toast.error(errorMessage);
-      if (error?.response?.status === 403) return toast.error(errorMessage);
       return null;
     }
   };
@@ -51,13 +63,14 @@ export const action =
 const CheckoutForm = () => {
   return (
     <Form method="POST" className="flex flex-col gap-y-4">
-      <h4 className="font-medium text-xl capitalize">shipping information</h4>
-      <FormInput label="first name" name="name" type="text" />
-      <FormInput label="address" name="address" type="text" />
+      <h4 className="font-medium text-xl capitalize">Shipping Information</h4>
+      <FormInput label="First Name" name="name" type="text" required />
+      <FormInput label="Address" name="address" type="text" required />
       <div className="mt-4">
-        <SubmitBtn text="place your order" />
+        <SubmitBtn text="Place Your Order" />
       </div>
     </Form>
   );
 };
+
 export default CheckoutForm;

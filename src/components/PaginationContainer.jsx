@@ -4,7 +4,7 @@ const PaginationContainer = () => {
   const { meta } = useLoaderData();
   const { pageCount, page } = meta.pagination;
 
-  const pages = Array.from({ length: pageCount }, (_, index) => {
+  const pages = Array.from({ length: 3 }, (_, index) => {
     return index + 1;
   });
   const { search, pathname } = useLocation();
